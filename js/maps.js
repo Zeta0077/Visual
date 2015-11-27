@@ -62,9 +62,7 @@ function cargar(arreglo, url){
        
     
 }*/
-//Codigo Provincias: 0=Jujuy, 1=Salta, 2=Formosa, 3=Chaco, 4=Tucuman, 5=Catamarca, 6=Sokantiago del Estero, 7=Santa Fe, 8=Misiones, 9=Corrientes,
-// 10=Entre Rios, 11=Cordoba, 12=La Rioja, 13=San Juan, 14=Mendoza, 15=San Luis, 16=Buenos Aires, 17=La Pampa, 18=Neuquen, 19=Rio Negro, 20=Chubut, 
-//21=Santa Cruz, 22= Tierra del fuego
+
 
 function cargarArregloCiudades(urlCiudades){
 	var arch = new XMLHttpRequest();
@@ -74,7 +72,6 @@ function cargarArregloCiudades(urlCiudades){
     {
         textoCompleto = arch.responseText;
         arrLineas = textoCompleto.split(/\r\n|\n/);
-
 
 		for (i = 0; i < 23; i++){
 		arrCiudades[i]=[6];
@@ -86,15 +83,17 @@ function cargarArregloCiudades(urlCiudades){
 		for (var i=0; i<arrLineas.length; i++)
 		{
           res = arrLineas[i].split(",");
-            var auxiliar = new Ciudad();
-            auxiliar.nombreProvincia= res[0];
-            auxiliar.nombreCiudad= res[1];
-            auxiliar.latitud= res[2];
-            auxiliar.longitud= res[3];
-            arrCiudades[posI][posJ]=auxiliar;
+          var auxiliar = new Ciudad();
+          auxiliar.nombreProvincia= res[0];
+          auxiliar.nombreCiudad= res[1];
+          auxiliar.latitud= res[2];
+          auxiliar.longitud= res[3];
+          arrCiudades[auxiliar.nombreProvincia][posJ]=auxiliar;// cambio el numero de provincia por el nombre de esa provincia
+          /*Codigo Provincias: 0=Jujuy, 1=Salta, 2=Formosa, 3=Chaco, 4=Tucuman, 5=Catamarca, 6=Sokantiago del Estero, 7=Santa Fe,
+          8=Misiones, 9=Corrientes,10=Entre Rios, 11=Cordoba, 12=La Rioja, 13=San Juan, 14=Mendoza, 15=San Luis, 16=Buenos Aires,
+          17=La Pampa, 18=Neuquen, 19=Rio Negro, 20=Chubut, 21=Santa Cruz, 22= Tierra del fuego*/
           if (posJ < 6) posJ++;
-          else
-          {
+          else{
             posI++;
             posJ= 0;
           }
@@ -136,23 +135,24 @@ function agregarmarcadores(arreglo,botonDerActivado){
     averiguarclima(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud),function(response){
       var info=JSON.parse(response);
       var icono = "http://openweathermap.org/img/w/"+info.weather[0].icon+".png";
+      var titulo = ciudad.nombreCiudad+" - "+ciudad.nombreProvincia;
         cities[ciudad.nombreProvincia] = new google.maps.Marker({
         position: {lat: parseFloat(ciudad.latitud), lng: parseFloat(ciudad.longitud)},
         map: map,
         icon: icono,
-        title: ciudad.nombreProvincia
+        title: titulo
       });
       
-      //click izq: info marcador
-      google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event){
+      //click der: info marcador
+      google.maps.event.addListener(cities[ciudad.nombreProvincia], 'rightclick', function (event){
         averiguarclimaext(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud));
       });
-      //click der: zoom en el marcador
+      //click izq: zoom en el marcador
       if (botonDerActivado){
-        google.maps.event.addListener(cities[ciudad.nombreProvincia], 'rightclick', function (event) {
-          map.setZoom(8);
+        google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event) {
+          map.setZoom(7);
           map.setCenter(this.getPosition());
-          agregarmarcadores(arrCiudades,false);
+          agregarmarcadores(arrCiudades,true);
         });
       }
     });
@@ -171,8 +171,8 @@ function init() {
 	zoomControl: false,						   //sin zoom buttons
 	streetViewControl: false,				   //sin street view
 	scrollwheel: false,						   //sin scroll wheel
-	draggable: false,						   //sin drag
-    keyboardShortcuts:false,                   //keyboard sin controls sobre el mapa
+	//draggable: false,						   //sin drag
+    //keyboardShortcuts:false,                   //keyboard sin controls sobre el mapa
     disableDoubleClickZoom: true               //no double click function por default
 
   };
@@ -183,7 +183,8 @@ function init() {
   var urlCapitales = 'https://dl.dropboxusercontent.com/s/sy1tb3iwof0634p/capitales.txt';
   var urlCiudades = 'https://dl.dropboxusercontent.com/s/00i60snrt36w7i3/ciudades.txt';
 
-  cargarArregloCiudades(urlCiudades);
+  //cargarArregloCiudades(urlCiudades);
+  cargar(arrCiudades,urlCiudades);
   cargar(arrCapitales,urlCapitales);
   agregarmarcadores(arrCapitales,true);//cargar solamente las capitales de las provincias
   
