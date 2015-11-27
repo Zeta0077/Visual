@@ -47,12 +47,13 @@ function agregarmarcadores(arreglo){
       
       //click izq: info marcador
       google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event){
-        averiguarclimaext(ciudad.latitud,ciudad.longitud);
+        averiguarclimaext(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud));
       });
       //click der: zoom en el marcador
       google.maps.event.addListener(cities[ciudad.nombreProvincia], 'rightclick', function (event) {
         map.setZoom(8);
         map.setCenter(this.getPosition());
+        
       });
     });
   });
