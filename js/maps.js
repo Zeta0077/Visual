@@ -23,6 +23,17 @@ function agregarmarcadores(arreglo){
     request.send();
   };
   
+  function averiguarclimaext(lat,lng,callbackFunction){
+    gettingData = true;
+    var requestString = "http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lng+"&appid=f3d95ae9eca49b0c5d1df03ca6bff3c7";
+    
+    //{ciudad.latitud}&lon={ciudad.longitud};
+    request = new XMLHttpRequest();
+    request.onload = function() {$("#contenedor").html(this.response);}
+    request.open("get", requestString, true);
+    request.send();
+  };
+  
   arreglo.forEach(function(ciudad){
     averiguarclima(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud),function(response){
       var info=JSON.parse(response);
@@ -35,7 +46,9 @@ function agregarmarcadores(arreglo){
       });
       
       //click izq: info marcador
-      google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event){alert("mostrar info de: "+ciudad.nombreProvincia)});
+      google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event){
+        averiguarclimaext(ciudad.latitud,ciudad.longitud);
+      });
       //click der: zoom en el marcador
       google.maps.event.addListener(cities[ciudad.nombreProvincia], 'rightclick', function (event) {
         map.setZoom(8);

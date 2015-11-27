@@ -5,6 +5,8 @@ div.opciones{
   margin-right: 5px;
 }
 
+#contenedor{float: right}
+
 #marcadores{
   float:right;
   margin-top:4px

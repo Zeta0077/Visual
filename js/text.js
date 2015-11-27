@@ -3,7 +3,6 @@ var arrCiudades = [23];
 var urlCapitales = 'https://dl.dropboxusercontent.com/s/sy1tb3iwof0634p/capitales.txt';
 var arrCapitales = [];
 
-//////////////////////////////////////////////////////////////////////
 
 // Estructura basica para ambos arreglos
 function Ciudad(){
@@ -15,6 +14,8 @@ function Ciudad(){
 
 // Con un string que obtengo del archivo la divido por las comas. Luego guardo los datos en una posicion del arreglo. 
 // En cada posicion del arreglo hay una ciudad distinta
+
+
 
 function cargarArreglo(arreglo, cadena)
 {
@@ -30,6 +31,9 @@ function cargarArreglo(arreglo, cadena)
 
 // Tomo los datos del archivo y lo almaceno en la variable allText. Luego separo las lineas y las almaceno en el arreglo 
 // allTextLines. Hago un for recorriendo ese arreglo y por cada posicion llamo a cargarArreglo
+
+
+//////////////////////////////////////////////////////////////////////
 
 function cargarArregloCapitales()
 {
