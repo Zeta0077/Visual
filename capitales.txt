@@ -1,0 +1,23 @@
+Jujuy,S. S. de Jujuy,-24.185556,-65.299444
+Salta,Salta,-24.788333,-65.410556
+Formosa,Formosa,-26.184722,-58.175833
+Misiones,Posadas,-27.366667,-55.896944
+Corrientes,Corrientes,-27.483333,-58.816667
+Chaco,Resistencia,-27.451389,-58.986667
+Santiago del Estero,Santiago del Estero,-27.784444,-64.266944
+Tucuman,San M. de Tucuman,-26.816667,-65.216667
+Catamarca,San F. d. V de Catamarca,-28.468611,-65.779167
+Santa Fe,Santa Fe de la Vera Cruz,-31.633333,-60.7
+Entre Rios,Parana,-31.744444,-60.5175
+Cordoba,Cordoba,-31.416667,-64.183333
+La Rioja,La Rioja,-29.4125,-66.854167
+San Juan,San Juan,-31.5375,-68.536389
+Mendoza,Mendoza,-32.883333,-68.816667
+San Luis,San Luis,-33.277222,-66.3525
+Buenos Aires,La Plata,-34.933333,-57.95
+La Pampa,Santa Rosa,-36.620278,-64.290556
+Neuquen,Neuquen,-38.95735,-68.045533
+Rio Negro,Viedma,-40.8,-63
+Chubut,Rawson,-43.3,-65.1
+Santa Cruz,Rio Gallegos,-51.633333,-69.233333
+Tierra del Fuego,Ushuaia,-54.807222,-68.304444
