@@ -112,7 +112,7 @@ function cargarArregloCiudades()
 
     function inicio() 
 	{
-        cargarArregloCapitales ();
+        cargarArregloCapitales();
         cargarArregloCiudades();   
 // FORMA DE ACCEDER A LAS POSICIONES DEL ARREGLO DE CIUDADES		
 		document.getElementById("editor").innerHTML= arrCiudades[22][5].nombreCiudad;

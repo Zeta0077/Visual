@@ -3,13 +3,11 @@ var arrCapitales = []; //provincias
 var arrCiudades = [23];  //ciudades de cada provincia
 var cities = [];
 
-//API OPENWEATHERMAP: TUPAR2015
+//para hacer request del openweather tuve que hacer una cuenta
+//http://home.openweathermap.org/
+//login: glhmaxi@live.com.ar pass: tupar1520
+//anidamos un ID al final de cada request de openweather 
 //ID: f3d95ae9eca49b0c5d1df03ca6bff3c7
-
-//JSON que trae el request de la API OPENWEATHER
-/* 
-{"coord":{"lon":-65.3,"lat":-24.19},"weather":[{"id":800,"main":"Clear","description":"Sky is Clear","icon":"01n"}],"base":"cmc stations","main":{"temp":277.087,"pressure":825.04,"humidity":89,"temp_min":277.087,"temp_max":277.087,"sea_level":1026.93,"grnd_level":825.04},"wind":{"speed":1.13,"deg":350.502},"clouds":{"all":0},"dt":1448073327,"sys":{"message":0.0066,"country":"AR","sunrise":1448097936,"sunset":1448146125},"id":3836564,"name":"San Salvador de Jujuy","cod":200}
-*/
 
 //funcion que agrega los marcadores
 function agregarmarcadores(arreglo){
@@ -22,6 +20,10 @@ function agregarmarcadores(arreglo){
     request.open("get", requestString, true);
     request.send();
   };
+  //JSON que trae el request averiguarclima
+  /* 
+  {"coord":{"lon":-65.3,"lat":-24.19},"weather":[{"id":800,"main":"Clear","description":"Sky is Clear","icon":"01n"}],"base":"cmc stations","main":{"temp":277.087,"pressure":825.04,"humidity":89,"temp_min":277.087,"temp_max":277.087,"sea_level":1026.93,"grnd_level":825.04},"wind":{"speed":1.13,"deg":350.502},"clouds":{"all":0},"dt":1448073327,"sys":{"message":0.0066,"country":"AR","sunrise":1448097936,"sunset":1448146125},"id":3836564,"name":"San Salvador de Jujuy","cod":200}
+  */
   
   function averiguarclimaext(lat,lng,callbackFunction){
     gettingData = true;
@@ -53,7 +55,7 @@ function agregarmarcadores(arreglo){
       google.maps.event.addListener(cities[ciudad.nombreProvincia], 'rightclick', function (event) {
         map.setZoom(8);
         map.setCenter(this.getPosition());
-        
+        agregarmarcadores(arrCiudades);
       });
     });
   });
