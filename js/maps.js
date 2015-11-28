@@ -1,7 +1,8 @@
 var map;
 var arrCapitales = [23]; //provincias
 var arrCiudades = [23];  //ciudades de cada provincia
-var cities = [];         //array para los marcadores
+var cities = [];         //array para los marcadores Capitales
+var Mciudades = [];      //array para los marcadores Ciudades
 
 //para hacer request del openweather tuve que hacer una cuenta
 //http://home.openweathermap.org/
@@ -104,8 +105,63 @@ function cargarArregloCiudades(urlCiudades){
     
 }
 
-//funcion que agrega los marcadores
-function agregarmarcadores(arreglo,botonDerActivado){
+//funcion que agrega los marcadores Ciudades
+function agregarmarcadoresciudades(arreglo){
+  
+  function averiguarclima(lat,lng,callbackFunction){
+    gettingData = true;
+    var requestString = "http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lng+"&appid=f3d95ae9eca49b0c5d1df03ca6bff3c7";
+    request = new XMLHttpRequest();
+    request.onload = function() {callbackFunction(this.response);}
+    request.open("get", requestString, true);
+    request.send();
+  };
+  
+  function averiguarclimaext(lat,lng,callbackFunction){
+    gettingData = true;
+    var requestString = "http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lng+"&appid=f3d95ae9eca49b0c5d1df03ca6bff3c7";
+    
+    //{ciudad.latitud}&lon={ciudad.longitud};
+    request = new XMLHttpRequest();
+    request.onload = function() {$("#contenedor").html(this.response);}
+    request.open("get", requestString, true);
+    request.send();
+  };
+  
+  arreglo.forEach(function(ciudad){
+    averiguarclima(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud),function(response){
+      var info=JSON.parse(response);
+      var icono = "http://openweathermap.org/img/w/"+info.weather[0].icon+".png";
+      var titulo = ciudad.nombreCiudad+" - "+ciudad.nombreProvincia;
+        Mciudades[ciudad.nombreCiudad] = new google.maps.Marker({
+        position: {lat: parseFloat(ciudad.latitud), lng: parseFloat(ciudad.longitud)},
+        map: null,
+        icon: icono,
+        title: titulo
+      });
+      
+      //click der: info marcador
+      google.maps.event.addListener(Mciudades[ciudad.nombreProvincia], 'rightclick', function (event){
+        averiguarclimaext(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud));
+      });
+      //click izq: zoom en el marcador
+      
+      google.maps.event.addListener(Mciudades[ciudad.nombreProvincia], 'click', function (event) {
+        map.setZoom(7);
+        map.setCenter(this.getPosition());
+      });
+      
+    });
+  });
+};
+
+
+
+
+
+
+//funcion que agrega los marcadores Capitales
+function agregarmarcadores(arreglo){
   
   function averiguarclima(lat,lng,callbackFunction){
     gettingData = true;
@@ -148,17 +204,16 @@ function agregarmarcadores(arreglo,botonDerActivado){
         averiguarclimaext(parseFloat(ciudad.latitud),parseFloat(ciudad.longitud));
       });
       //click izq: zoom en el marcador
-      if (botonDerActivado){
-        google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event) {
-          map.setZoom(7);
-          map.setCenter(this.getPosition());
-          agregarmarcadores(arrCiudades,true);
-        });
-      }
+      
+      google.maps.event.addListener(cities[ciudad.nombreProvincia], 'click', function (event) {
+        map.setZoom(7);
+        map.setCenter(this.getPosition());
+        showcitymark();
+      });
+      
     });
   });
 };
-
 
 function init() {
   var latlng = new google.maps.LatLng(-40.528611, -64.136344); //Vista Argentina
@@ -186,8 +241,8 @@ function init() {
   //cargarArregloCiudades(urlCiudades);
   cargar(arrCiudades,urlCiudades);
   cargar(arrCapitales,urlCapitales);
-  agregarmarcadores(arrCapitales,true);//cargar solamente las capitales de las provincias
-  
+  agregarmarcadores(arrCapitales);//cargar solamente las capitales de las provincias
+  agregarmarcadoresciudades(arrCiudades);
   /*
   ArrayProvincias.forEach(function(provincia){
 
@@ -229,10 +284,28 @@ function init() {
   });
   */
   
+
   
 
-// boton derecho del mouse en cualquier parte del mapa que no sea un marcador, vuelve a mostrar toda la argentina con el zoom alejado
-google.maps.event.addListener(map,'rightclick', function(event){map.setZoom(5); map.setCenter(latlng);});
+
+  // boton derecho del mouse en cualquier parte del mapa que no sea un marcador, vuelve a mostrar toda la argentina con el zoom alejado
+  google.maps.event.addListener(map,'rightclick', function(event){
+    map.setZoom(5);
+    map.setCenter(latlng);
+    hidecitymark();
+  });
+}
+
+function hidecitymark(){
+  for (var ciudad in Mciudades){
+    Mciudades[ciudad].setMap(null);
+  };
+}
+
+function showcitymark(){
+  for (var ciudad in Mciudades){
+    Mciudades[ciudad].setMap(map);
+  }
 }
 
 google.maps.event.addDomListener(window,'load',init);
